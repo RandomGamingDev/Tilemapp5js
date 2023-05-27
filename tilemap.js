@@ -1,6 +1,6 @@
 class Tilemap {
-  constructor(off, size, res, img, tiles, rdr = window) {
-    this.off = off;
+  constructor(pos, size, res, img, tiles, off = [0, 0], rdr = window) {
+    this.pos = pos;
     this.size = size;
     this.res = res;
     this.img = img;
@@ -9,14 +9,16 @@ class Tilemap {
     this.tilemap = new Array(this.res[0]);
     for (let i = 0; i < this.res[0]; i++)
       this.tilemap[i] = new Array(this.res[1]).fill(0);
-      
+   
+    this.off = off;
+    
     this.rdr = rdr;
   }
   
   display() {
     push();
-    for (let i = 0; i < this.res[0]; i++)
-      for (let j = 0; j < this.res[1]; j++) {
+    for (let i = this.off[0]; i < this.res[0]; i++)
+      for (let j = this.off[1]; j < this.res[1]; j++) {
         const tile = this.tilemap[i][j];
         if (tile == 0 || tile == undefined)
           continue;
@@ -28,8 +30,8 @@ class Tilemap {
         
         this.rdr.image(
           this.img,
-          this.off[0] + pixelSize[0] * i,
-          this.off[1] + pixelSize[1] * j,
+          this.pos[0] + pixelSize[0] * i,
+          this.pos[1] + pixelSize[1] * j,
           pixelSize[0],
           pixelSize[1],
           dispTile[0],
