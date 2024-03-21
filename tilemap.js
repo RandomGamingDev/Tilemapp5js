@@ -16,7 +16,7 @@ class Tilemap {
   }
   
   display() {
-    push();
+    this.rdr.push();
     for (let i = this.off[0]; i < this.res[0]; i++)
       for (let j = this.off[1]; j < this.res[1]; j++) {
         const tile = this.tilemap[i][j];
@@ -40,6 +40,6 @@ class Tilemap {
           dispTile[3]
         );
       }
-    pop();
+    this.rdr.pop();
   }
 }
