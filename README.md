@@ -1,6 +1,8 @@
 # Tilemapp5js
 A tilemap library for p5.js
 
+<img src="Tilemapp5js.png" width="128"/>
+
 Documentation and an example is available here: https://randomgamingdev.github.io/EzDok/#v1/%22https://raw.githubusercontent.com/RandomGamingDev/Tilemapp5js/main/documentation/documentation.dok%22/0/
 
 To use it you can simply include https://cdn.jsdelivr.net/gh/RandomGamingDev/Tilemapp5js/tilemap.js in your HTML file! If you want to you can also just download the file and include it in your HTML file that way.
