@@ -1,0 +1,147 @@
+~
+  "title": "Tilemapp5js",
+  "description": "A simple to use & performant tilemap p5.js library",
+  "libraries": [
+    "https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.1/p5.js",
+    "https://cdn.jsdelivr.net/gh/RandomGamingDev/Tilemapp5js@33d5457375a4b2fd9a28f7fe7106aec43317fedb/tilemap.js"
+  ]
+~
+
+@ What's Tilemapp5js?
+~
+  "scripts": [
+    "documentation/tilemap-demonstration.js"
+  ]
+~
+# What's Tilemapp5js?
+### It's a simple to use tilemap library for p5.js that interoperates well with other libraries!
+
+Here's an example of it in action (loaded from a Tiled tilemap and rerendered every frame):
+<div id="sketch-holder"></div>
+The example's code is available in the `Quickstart` section.
+(It also works in p5.js instance mode!)
+
+### To use it, you can simply import it as a cdn from https://cdn.jsdelivr.net/gh/RandomGamingDev/Tilemapp5js@33d5457375a4b2fd9a28f7fe7106aec43317fedb/tilemap.js (add .min before .js for the minified version), import into your project, or copy and paste `tilemap.js` into your editor!
+
+@ Quickstart
+# Quickstart
+
+Here's the instance mode code for the previous example on the `What's Tilemapp5js` section when simplified down to its base components (no performance measuring and instance mode p5.js stuff):
+```
+let canvas;
+let texture_atlas;
+let tilemap;
+
+function preload() {
+    texture_atlas = loadImage("documentation/tilemap.png");
+}
+
+function setup() {
+    // Create the canvas to draw onto
+    canvas = createCanvas(700, 400);
+
+    // Create the tilemap
+    tilemap = new Tilemap([0, 0], [width, height], [28, 16], texture_atlas);
+    // Create a list containing the tile coordinates and size
+    for (let i = 0; i < 20; i++)
+        for (let j = 0; j < 20; j++)
+            tilemap.tiles.push([j * 64 + 1, i * 64 + 1, 63, 63])
+
+    // Load the tilemap from the Tiled file
+    const tiled_tilemap = 
+        fetch("documentation/example-tilemap.json", {cache: "no-cache"})
+            .then(res => res.json())
+            .then(json => {
+                const data = json["layers"][0]["data"];
+                for (let i = 0; i < tilemap.res[0]; i++)
+                    for (let j = 0; j < tilemap.res[1]; j++)
+                        tilemap.tilemap[i][j] = data[j * tilemap.res[0] + i];
+            });
+};
+
+function draw() {
+    background(0);
+
+    // Display the tilemap
+    tilemap.display();
+};
+```
+
+Now, lets dissect this into the parts used for drawing the tilemap!
+
+<br/>
+
+## Creating the Tilemap
+First we create the Tilemap with 
+```
+tilemap = new Tilemap([0, 0], [width, height], [28, 16], texture_atlas);
+```
+Its created at the position (0, 0), with a size of (width, height), a resolution in tiles of (28, 16), and the `texture_atlas` atlas
+
+## Specifying the tiles
+
+Then, we write this
+```
+for (let i = 0; i < 20; i++)
+    for (let j = 0; j < 20; j++)
+        tilemap.tiles.push([j * 64, i * 64, 64, 64])
+```
+to create all the tiles since all tiles are of size 64 (we're just choosing 63 and adding 1 to each of the coordinates in this case to avoid texture bleeding since this tilemap isn't padded)
+and arranged in a grid formation as seen in the texture atlas used for this below:
+<img src="documentation/tilemap.png" />
+
+For instance, the top left tile can be loaded like this:
+```
+tilemap.tiles.push([0, 0, 64, 64])
+```
+With the top left of the tile being located at the coordinates (0, 0) and the size of the tile being loaded as (64, 64).
+
+## Loading the tilemap
+
+This part is more specific to what you're using it for, but here's an example of loading the first layer of the Tiled tilemap that was exported as a JSON into Tilemapp5js's `Tilemap` (note this is done asynchronously in this example):
+```
+// Load the tilemap from the Tiled file
+const tiled_tilemap = 
+    fetch("documentation/example-tilemap.json", {cache: "no-cache"})
+        .then(res => res.json())
+        .then(json => {
+            const data = json["layers"][0]["data"];
+            for (let i = 0; i < tilemap.res[0]; i++)
+                for (let j = 0; j < tilemap.res[1]; j++)
+                    tilemap.tilemap[i][j] = data[j * tilemap.res[0] + i];
+        });
+```
+
+To modify the tilemap manually or for loading a different tilemap format you modify the `Tilemap`'s `tilemap` attribute like this:
+```
+tilemap.tilemap[0][1] = 3;
+```
+This example modifies the tile located at (0, 1) to be tile #3 with the number being the value used to reference the tiles contained within the `tiles` attribute list.
+
+## Displaying the Tilemap
+
+Finally, to display the tilemap we just execute the `display()` method:
+```
+tilemap.display();
+```
+
+@ class Tilemap
+# class Tilemap
+
+## Constructor: This creates a tilemap with the following attributes (each one is turned into an attribute of the class)
+#### Parameters:
+- pos: Number[2] = The position of the tilemap when it's rendered
+- size: Number[2] = The size of the tilemap when it's rendered
+- res: Integer[2] = The resolution of the tilemap (the width and height in terms of tiles)
+- img: p5.Image|p5.Element|p5.Texture|p5.Framebuffer|p5.FramebufferTexture = The texture atlas
+- tiles: Number[4][] = The coordinates of the tiles on the atlas, with each subarray of 4 Numbers in this 
+format [pos_x, pos_y, size_x, size_y], with the position being at the top left of the tile
+- off: Number[2] ([0, 0]) = The offset in tiles from the top left that's rendered
+- rdr: p5 (window) = The p5.js instance to render to, which is by default set to the global instance
+
+## Other Attributes:
+- tilemap: Integer[][] = This is generated to be the size chosen by res with size [height, width].
+It is a regular Javascript list which allows for better interoperability with other libraries.
+
+## Non-Static Methods
+- display() = Call this method to display the tilemap
