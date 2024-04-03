@@ -4,7 +4,7 @@ new p5(p => {
     let tilemap;
 
     p.preload = function () {
-        texture_atlas = p.loadImage("documentation/tilemap.png");
+        texture_atlas = p.loadImage("https://raw.githubusercontent.com/RandomGamingDev/Tilemapp5js/main/documentation/tilemap.png");
     }
 
     p.setup = function () {
@@ -23,7 +23,7 @@ new p5(p => {
 
         // Load the tilemap from the Tiled file
         const tiled_tilemap = 
-            fetch("documentation/example-tilemap.json", {cache: "no-cache"})
+            fetch("https://raw.githubusercontent.com/RandomGamingDev/Tilemapp5js/main/documentation/example-tilemap.json", {cache: "no-cache"})
                 .then(res => res.json())
                 .then(json => {
                     const data = json["layers"][0]["data"];

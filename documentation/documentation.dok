@@ -10,7 +10,7 @@
 @ What's Tilemapp5js?
 ~
   "scripts": [
-    "documentation/tilemap-demonstration.js"
+    "https://cdn.jsdelivr.net/gh/RandomGamingDev/Tilemapp5js@706616a19e87c666620be40c7ce2d065564a4936/documentation/tilemap-demonstration.js"
   ]
 ~
 # What's Tilemapp5js?
@@ -88,7 +88,7 @@ for (let i = 0; i < 20; i++)
 ```
 to create all the tiles since all tiles are of size 64 (we're just choosing 63 and adding 1 to each of the coordinates in this case to avoid texture bleeding since this tilemap isn't padded)
 and arranged in a grid formation as seen in the texture atlas used for this below:
-<img src="documentation/tilemap.png" />
+<img src="https://raw.githubusercontent.com/RandomGamingDev/Tilemapp5js/main/documentation/tilemap.png" />
 
 For instance, the top left tile can be loaded like this:
 ```
